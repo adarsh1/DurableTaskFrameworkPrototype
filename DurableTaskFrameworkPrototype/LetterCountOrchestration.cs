@@ -10,13 +10,20 @@ namespace DurableTaskFrameworkPrototype
 
 	public class LetterCountOrchestration : TaskOrchestration<int [], string>
 	{
-		public override Task<int[]> RunTask(OrchestrationContext context, string input)
+		public override async Task<int[]> RunTask(OrchestrationContext context, string input)
 		{
 			input = input.ToLower();
+			var taskList = new List<Task>();
 			foreach(char c in input)
 			{
-				context.ScheduleTask<int>(typeof(AddTask), c);
+				taskList.Add(context.ScheduleTask<int>(typeof(AddTask), c));
 			}
+
+			await Task.WhenAll(taskList);
+
+			await context.ScheduleTask<bool>(typeof(LogTask), AddTask.LetterCounts.Value);
+
+			return AddTask.LetterCounts.Value;
 		}
 	}
 }

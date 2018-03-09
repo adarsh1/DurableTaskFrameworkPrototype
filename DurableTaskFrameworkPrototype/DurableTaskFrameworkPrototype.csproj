@@ -76,6 +76,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LogTask.cs" />
     <Compile Include="AddTask.cs" />
     <Compile Include="LetterCountOrchestration.cs" />
     <Compile Include="Program.cs" />
