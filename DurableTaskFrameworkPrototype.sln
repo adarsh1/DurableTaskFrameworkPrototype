@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DurableTaskFrameworkPrototype", "DurableTaskFrameworkPrototype\DurableTaskFrameworkPrototype.csproj", "{AFC79161-7D70-42EB-AEC7-555F03B57998}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{5E409A66-F0CC-4C65-A406-84941B31682D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{2D041F26-F817-4D59-8AB5-895650AF5884}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{AFC79161-7D70-42EB-AEC7-555F03B57998}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFC79161-7D70-42EB-AEC7-555F03B57998}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFC79161-7D70-42EB-AEC7-555F03B57998}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E409A66-F0CC-4C65-A406-84941B31682D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E409A66-F0CC-4C65-A406-84941B31682D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E409A66-F0CC-4C65-A406-84941B31682D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E409A66-F0CC-4C65-A406-84941B31682D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D041F26-F817-4D59-8AB5-895650AF5884}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D041F26-F817-4D59-8AB5-895650AF5884}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D041F26-F817-4D59-8AB5-895650AF5884}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D041F26-F817-4D59-8AB5-895650AF5884}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

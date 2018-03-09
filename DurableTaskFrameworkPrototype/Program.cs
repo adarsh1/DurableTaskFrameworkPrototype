@@ -16,7 +16,7 @@ namespace DurableTaskFrameworkPrototype
 		{
 			AzureStorageOrchestrationService orchestrationService = new AzureStorageOrchestrationService(new AzureStorageOrchestrationServiceSettings()
 			{
-				StorageConnectionString = "connection",
+				StorageConnectionString = "DefaultEndpointsProtocol=https;AccountName=kanodaprototype;AccountKey=0OiZiF8Xd2R8GvUxUh+cnganiM2LPIff/yfaHeyaMsjm8kG2VECV4XfZBWE84DVtyqkxiMNRalFexul9j+1tmA==;EndpointSuffix=core.windows.net",
 				TaskHubName = "Prototype"
 			});
 
