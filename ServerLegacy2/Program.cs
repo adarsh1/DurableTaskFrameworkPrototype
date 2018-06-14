@@ -5,17 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Server
+namespace ServerLegacy2
 {
-    using DurableTask.ServiceBus;
-    using DurableTask.ServiceBus.Tracking;
-    using DurableTask.ServiceBus.Settings;
-    using DurableTask.Core;
+    using DurableTask;
     using DurableTaskFrameworkPrototype;
-    using DurableTask.Core.Tracking;
-    using DurableTask.Core.Settings;
-    using DurableTask.Core.Common;
-    using DurableTask.AzureStorage;
 
     class Program
     {
@@ -29,15 +22,30 @@ namespace Server
 
         static void Main(string[] args)
         {
-            IOrchestrationServiceInstanceStore instanceStore = new AzureTableInstanceStore(ServiceSettings.TaskHubName, ServiceSettings.StorageConnectionString);
-            AzureStorageOrchestrationService orchestrationService = new AzureStorageOrchestrationService(new AzureStorageOrchestrationServiceSettings()
+            var settings = new TaskHubWorkerSettings
             {
-                StorageConnectionString = ServiceSettings.StorageConnectionString,
-                TaskHubName = ServiceSettings.TaskHubName
-            });
+                MessageCompressionSettings = new CompressionSettings
+                {
+                    Style = CompressionStyle.Threshold,
+                    ThresholdInBytes = MessageCompressionThresholdInBytes
+                },
+                TaskOrchestrationDispatcherSettings =
+                {
+                    MaxConcurrentOrchestrations = ConcurrentOrchstrations,
+                    CompressOrchestrationState = true,
+                },
+                TrackingDispatcherSettings =
+                {
+                    MaxConcurrentTrackingSessions = ConcurrentTrackingSessions,
+                },
+                TaskActivityDispatcherSettings =
+                {
+                    MaxConcurrentActivities = ConcurrentActivities,
+                },
+            };
 
-            orchestrationService.CreateIfNotExistsAsync().Wait();
-            TaskHubWorker taskHub = new TaskHubWorker(orchestrationService);
+            TaskHubWorker taskHub = new TaskHubWorker(ServiceSettings.TaskHubName, ServiceSettings.ServiceBusConnectionString, ServiceSettings.StorageConnectionString, settings);
+            taskHub.CreateHubIfNotExists();
             try
             {
                 taskHub.AddTaskOrchestrations(
@@ -55,12 +63,12 @@ namespace Server
                     );
 
 
-                taskHub.StartAsync().Wait();
+                taskHub.Start();
 
                 Console.WriteLine("Press any key to quit.");
                 Console.ReadLine();
 
-                taskHub.StopAsync(true).Wait();
+                taskHub.Stop(true);
             }
             catch (Exception e)
             {

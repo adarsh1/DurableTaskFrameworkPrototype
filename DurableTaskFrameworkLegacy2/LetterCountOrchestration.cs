@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DurableTaskFrameworkPrototype
 {
-	using DurableTask.Core;
+	using DurableTask;
 
 	public class LetterCountOrchestration : TaskOrchestration<int [], string>
 	{
@@ -14,17 +14,14 @@ namespace DurableTaskFrameworkPrototype
 		{
 			input = input.ToLower();
 			var taskList = new List<Task>();
-
-            Console.WriteLine(await Common.RandGen());
-
-            foreach (char c in input)
+			foreach(char c in input)
 			{
 				taskList.Add(context.ScheduleTask<int>(typeof(AddTask), c));
 			}
 
 			await Task.WhenAll(taskList);
 
-            await context.ScheduleTask<bool>(typeof(LogTask), AddTask.LetterCounts.Value);
+			await context.ScheduleTask<bool>(typeof(LogTask), AddTask.LetterCounts.Value);
 
 			return AddTask.LetterCounts.Value;
 		}

@@ -7,14 +7,10 @@ using System.Threading.Tasks;
 
 namespace Client
 {
-    using DurableTask.AzureStorage;
-    using DurableTask.Core;
-    using DurableTask.Core.Common;
-    using DurableTask.Core.Settings;
-    using DurableTask.Core.Tracking;
-    using DurableTask.ServiceBus;
-    using DurableTask.ServiceBus.Settings;
-    using DurableTask.ServiceBus.Tracking;
+    using DurableTask;
+    using DurableTask.Common;
+    using DurableTask.Settings;
+    using DurableTask.Tracking;
     using DurableTaskFrameworkPrototype;
 
     public class Program
@@ -32,11 +28,20 @@ namespace Client
         {
             IOrchestrationServiceInstanceStore instanceStore = new AzureTableInstanceStore(ServiceSettings.TaskHubName, ServiceSettings.StorageConnectionString);
             IOrchestrationServiceBlobStore blobStore = new AzureStorageBlobStore(ServiceSettings.TaskHubName, ServiceSettings.StorageConnectionString);
-            AzureStorageOrchestrationService orchestrationService = new AzureStorageOrchestrationService(new AzureStorageOrchestrationServiceSettings()
+            var settings = new ServiceBusOrchestrationServiceSettings
             {
-                StorageConnectionString = ServiceSettings.StorageConnectionString,
-                TaskHubName = ServiceSettings.TaskHubName
-            });
+                MessageCompressionSettings = new CompressionSettings
+                {
+                    Style = CompressionStyle.Always,
+                    ThresholdInBytes = MessageCompressionThresholdInBytes
+                },
+                JumpStartSettings =
+                {
+                    JumpStartEnabled = false
+                }
+            };
+
+            ServiceBusOrchestrationService orchestrationService = new ServiceBusOrchestrationService(ServiceSettings.ServiceBusConnectionString, ServiceSettings.TaskHubName, instanceStore, blobStore, settings);
 
             TaskHubClient client = new TaskHubClient(orchestrationService);
             Console.WriteLine("Enter -1 to exit anything else will be fed to the orchestration");
@@ -60,7 +65,7 @@ namespace Client
 
             var result = client.WaitForOrchestrationAsync(instance, TimeSpan.MaxValue).Result;
 
-            Console.WriteLine($"Task done: {result?.OrchestrationStatus} {result?.Output}");
+            Console.WriteLine($"Task done: {result?.OrchestrationStatus}");
         }
 
         private static void DoCron(TaskHubClient client, string s)
@@ -72,17 +77,6 @@ namespace Client
 
             Console.WriteLine($"Task done: {result?.OrchestrationStatus}");
         }
-
-        private static void DoParentChild(TaskHubClient client, string s)
-        {
-            var instance = client.CreateOrchestrationInstanceAsync(typeof(Counter.ParentWorkflow), false).Result;
-            Console.WriteLine("Workflow Instance Started: " + instance);
-
-            var result = client.WaitForOrchestrationAsync(instance, TimeSpan.MaxValue).Result;
-
-            Console.WriteLine($"Task done: {result?.OrchestrationStatus}");
-        }
-
         private static void DoCounter(TaskHubClient client, string s)
         {
             if (s == "begin")
@@ -92,7 +86,7 @@ namespace Client
             }
             else
             {
-                client.RaiseEventAsync(instance, "operation", s).Wait();
+                client.RaiseEventAsync(instance,"operation", s).Wait();
             }
 
             var result = client.WaitForOrchestrationAsync(instance, TimeSpan.MaxValue).Result;

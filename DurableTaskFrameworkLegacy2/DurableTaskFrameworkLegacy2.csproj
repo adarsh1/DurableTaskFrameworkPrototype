@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AFC79161-7D70-42EB-AEC7-555F03B57998}</ProjectGuid>
+    <ProjectGuid>{F2C7AF90-5CBF-4BD8-ACC3-D78ED2B981BD}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>DurableTaskFrameworkPrototype</RootNamespace>
-    <AssemblyName>DurableTaskFrameworkPrototype</AssemblyName>
+    <RootNamespace>DurableTaskFrameworkLegacy2</RootNamespace>
+    <AssemblyName>DurableTaskFrameworkLegacy2</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -35,11 +35,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DurableTask.AzureStorage, Version=2.0.0.5, Culture=neutral, PublicKeyToken=d53979610a6e89dd, processorArchitecture=MSIL">
-      <HintPath>..\packages\DurableTask.AzureStorage.1.2.2\lib\net451\DurableTask.AzureStorage.dll</HintPath>
-    </Reference>
-    <Reference Include="DurableTask.Core, Version=2.0.0.6, Culture=neutral, PublicKeyToken=d53979610a6e89dd, processorArchitecture=MSIL">
-      <HintPath>..\packages\DurableTask.Core.2.0.0.6\lib\net451\DurableTask.Core.dll</HintPath>
+    <Reference Include="DurableTask, Version=1.0.0.12, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\durabletasklegacy\Framework\bin\debugB\DurableTask.dll</HintPath>
     </Reference>
     <Reference Include="ImpromptuInterface, Version=6.2.2.0, Culture=neutral, PublicKeyToken=0b1781c923b2975b, processorArchitecture=MSIL">
       <HintPath>..\packages\ImpromptuInterface.6.2.2\lib\net40\ImpromptuInterface.dll</HintPath>
@@ -59,6 +57,12 @@
       <HintPath>..\packages\Microsoft.Data.Services.Client.5.6.4\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.ServiceBus, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WindowsAzure.ServiceBus.3.0.1\lib\net45-full\Microsoft.ServiceBus.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Configuration, Version=1.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.WindowsAzure.ConfigurationManager.1.7.0.0\lib\net35-full\Microsoft.WindowsAzure.Configuration.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.WindowsAzure.Storage, Version=7.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\WindowsAzure.Storage.7.2.1\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
     </Reference>
@@ -70,6 +74,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Spatial, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Spatial.5.6.4\lib\net40\System.Spatial.dll</HintPath>
       <Private>True</Private>
@@ -82,7 +88,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common.cs" />
     <Compile Include="CounterOrchestration.cs" />
     <Compile Include="CronOrchestration.cs" />
     <Compile Include="CronTask.cs" />
